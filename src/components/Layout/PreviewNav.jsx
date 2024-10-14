@@ -8,7 +8,7 @@ const PreviewNav = () => {
 
   const handelCopyShareLink = () => {
     navigator.clipboard.writeText(
-     `https://link-sharing-app-server-87ng.vercel.app/profile/${userData._id}`
+     `https://link-sharing-app-eb.vercel.app/profile/${userData._id}`
     );
     toast.success("Link Copied", {
       position: "top-right",
