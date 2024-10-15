@@ -53,7 +53,7 @@ const Login = () => {
   const handelLoginGuest = () => {
     axios
       .post(`${import.meta.env.VITE_API_LINK}auth/login`, {
-        email: "guest.user@gmail.com",
+        email: "guest@gmail.com",
         password: "123456",
       })
       .then((res) => {
