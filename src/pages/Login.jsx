@@ -51,7 +51,6 @@ const Login = () => {
       });
   };
   const handelLoginGuest = () => {
-    setLoadingBtn(true);
     axios
       .post(`${import.meta.env.VITE_API_LINK}auth/login`, {
         email: "guest.user@gmail.com",
@@ -70,7 +69,6 @@ const Login = () => {
           let expires = expirationTime.toUTCString();
           document.cookie = `sec_token=${res.data.sec_token}; expires=${expires};`;
           dispatch(loggedUser(res.data.userData[0]));
-          setLoadingBtn(false);
           setTimeout(() => {
             navigate("/");
           }, 2000);
@@ -126,11 +124,7 @@ const Login = () => {
                 onClick={handelLoginGuest}
                 className="flex w-full mt-2 justify-center rounded-md bg-brand px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {loadingBtn ? (
-                  <div className="w-5 h-5 border-4 border-white rounded-full animate-spin"></div>
-                ) : (
-                  "Continue as Guest"
-                )}
+                  Continue as Guest
               </button>
             </div>
           </div>
