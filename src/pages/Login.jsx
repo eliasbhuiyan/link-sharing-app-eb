@@ -50,6 +50,42 @@ const Login = () => {
         setLoadingBtn(false);
       });
   };
+  const handelLoginGuest = () => {
+    setLoadingBtn(true);
+    axios
+      .post(`${import.meta.env.VITE_API_LINK}auth/login`, {
+        email: "guest.user@gmail.com",
+        password: "123456",
+      })
+      .then((res) => {
+        if (res.data.userData[0].emailVerified) {
+          toast.success(res.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            closeOnClick: true,
+            theme: "light",
+          });
+          let currentTime = new Date().getTime();
+          let expirationTime = new Date(currentTime + 10 * 24 * 60 * 60 * 1000);
+          let expires = expirationTime.toUTCString();
+          document.cookie = `sec_token=${res.data.sec_token}; expires=${expires};`;
+          dispatch(loggedUser(res.data.userData[0]));
+          setLoadingBtn(false);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response?.data.error, {
+          position: "top-right",
+          autoClose: 5000,
+          closeOnClick: true,
+          theme: "light",
+        });
+        setLoadingBtn(false);
+      });
+  };
   return (
     <section className="h-screen flex items-center px-6 gap-6">
       <ToastContainer />
@@ -83,6 +119,17 @@ const Login = () => {
                   <div className="w-5 h-5 border-4 border-white rounded-full animate-spin"></div>
                 ) : (
                   "Sign In"
+                )}
+              </button>
+              <button
+                disabled={loadingBtn}
+                onClick={handelLoginGuest}
+                className="flex w-full mt-2 justify-center rounded-md bg-brand px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {loadingBtn ? (
+                  <div className="w-5 h-5 border-4 border-white rounded-full animate-spin"></div>
+                ) : (
+                  "Continue as Guest"
                 )}
               </button>
             </div>
